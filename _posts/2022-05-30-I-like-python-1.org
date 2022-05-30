@@ -1,5 +1,0 @@
-#+TITLE: How I leared to like python
-#+LAYOUT: post
-
-* Intro
-
