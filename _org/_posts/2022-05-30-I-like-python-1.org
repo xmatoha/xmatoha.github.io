@@ -1,0 +1,31 @@
+#+begin_export html
+---
+layout: post
+title: Mocking in python
+---
+#+end_export
+
+
+* Intro
+This post summarizes most common usage of magic mock and specifically
+pytest-mock which is thin wrapper around magic mock.
+
+* Patching
+First useful feature is patching functions in module. 
+Lets imagine we have following code in module ui.py
+ 
+#+begin_src python
+from some_package import my_print_function
+def render_data(data):
+    my_print_function(data)
+#+end_src
+
+#+begin_src python
+  import pytest
+  from pytest_mocking import MockerFixture
+
+  def test_1(mocker:Mockerfixture):
+      print_mock = mocker.patch('ui.my_print_function')
+      print_mock.return_value = ''
+
+#+end_src
