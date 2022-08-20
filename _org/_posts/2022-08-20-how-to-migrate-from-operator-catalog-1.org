@@ -1,3 +1,10 @@
+#+begin_export html
+---
+layout: post
+title: Migration from ibm-operator-catalog
+---
+#+end_export
+
 * Migration from ibm-operator-catalog
 Following code will replace all ibm-operator-catalog entries in
 #+begin_src sh
