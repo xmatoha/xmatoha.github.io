@@ -19,12 +19,13 @@ pytest-mock which is thin wrapper around magic mock.
 <div class="outline-text-2" id="text-orgc9a436d">
 <p>
 First useful feature is patching functions in module. 
-Lets imagine we have following code
+Lets imagine we have following code in module ui.py
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python">def render_data(data):
-    print(data)
+<pre class="src src-python">from some_package import my_print_function
+def render_data(data):
+    my_print_function(data)
 </pre>
 </div>
 
@@ -33,7 +34,8 @@ Lets imagine we have following code
 from pytest_mocking import MockerFixture
 
 def test_1(mocker:Mockerfixture):
-    mocker.
+    print_mock = mocker.patch('ui.my_print_function')
+    print_mock.return_value = ''
 
 </pre>
 </div>

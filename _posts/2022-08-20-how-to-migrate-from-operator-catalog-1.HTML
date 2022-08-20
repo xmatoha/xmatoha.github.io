@@ -1,0 +1,83 @@
+<div id="outline-container-orgb8a950c" class="outline-2">
+<h2 id="orgb8a950c">Migration from ibm-operator-catalog</h2>
+<div class="outline-text-2" id="text-orgb8a950c">
+<p>
+Following code will replace all ibm-operator-catalog entries in
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">oc get operandRegistry -n ibm-common-services -o yaml
+</pre>
+</div>
+
+<p>
+It can find mapping by executing:
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">oc get packagemanifest -o yaml
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure">(ns replace)
+
+(require '[clj-yaml.core :as yaml])
+(require '[clojure.string :as string])
+
+(def op (yaml/parse-string (slurp "operand-registry.yaml")))
+(def pm (yaml/parse-string (slurp "pkg-manifest.yaml")))
+
+(defn manual-adjustments [op]
+  (cond (or (= (get-in op [:name]) "zen-cpp-operator")
+	    (= (get-in op [:name]) "ibm-user-data-services-operator")
+	    (= (get-in op [:name]) "ibm-bts-operator"))
+	(assoc-in op
+		  [:sourceName]
+		  "opencloud-operators")
+	:else op))
+
+(defn find-new-source [op]
+  (-&gt;&gt;
+   (get pm :items)
+   (filter
+    (fn [e]
+      (and
+       (not= (get-in e [:status :catalogSource])
+	     "ibm-operator-catalog")
+       (not= (get-in e [:status :catalogSource])
+	     "certified-operators")
+       (.contains
+	(get-in e [:metadata :name])
+	(get-in op [:packageName])))))
+   (map
+    (fn [e]
+      (assoc-in op
+		[:sourceName]
+		(get-in e [:status :catalogSource]))))))
+
+(defn get-new-source [op]
+  (let [new-source (first (find-new-source op))]
+    (if  (nil? new-source) (manual-adjustments op) new-source)))
+
+(defn process-operator [operator]
+  (get-new-source operator))
+
+(defn process-operators [operators]
+  (map process-operator operators))
+
+(defn process-item [item]
+  (assoc-in item [:spec :operators] (process-operators (get-in item [:spec :operators]  item))))
+
+(defn process-items [items]
+  (map process-item items))
+
+(defn do-main []
+  (-&gt;&gt;
+   (process-items (get-in op [:items]))
+   (assoc-in op [:items])))
+
+(spit "new-operands.yaml" (yaml/generate-string (do-main)  :dumper-options {:flow-style :block}))
+</pre>
+</div>
+</div>
+</div>
