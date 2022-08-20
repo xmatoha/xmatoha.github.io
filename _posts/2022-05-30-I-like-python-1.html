@@ -1,9 +1,41 @@
 ---
 layout: post
-title: How I learned to like python
+title: Mocking in python
 ---
 
 
-<div id="outline-container-org59c5634" class="outline-2">
-<h2 id="org59c5634">Intro</h2>
+<div id="outline-container-org2d1537e" class="outline-2">
+<h2 id="org2d1537e">Intro</h2>
+<div class="outline-text-2" id="text-org2d1537e">
+<p>
+This post summarizes most common usage of magic mock and specifically
+pytest-mock which is thin wrapper around magic mock.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc9a436d" class="outline-2">
+<h2 id="orgc9a436d">Patching</h2>
+<div class="outline-text-2" id="text-orgc9a436d">
+<p>
+First useful feature is patching functions in module. 
+Lets imagine we have following code
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python">def render_data(data):
+    print(data)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-python">import pytest
+from pytest_mocking import MockerFixture
+
+def test_1(mocker:Mockerfixture):
+    mocker.
+
+</pre>
+</div>
+</div>
 </div>
