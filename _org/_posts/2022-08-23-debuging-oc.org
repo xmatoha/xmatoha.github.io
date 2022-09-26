@@ -1,0 +1,12 @@
+#+begin_export html
+---
+layout: post
+title: Openshift tips and tricks
+---
+#+end_export
+
+
+To review which scc allowed pod to run
+#+begin_src sh
+oc get pod podname -o yaml | oc adm policy scc-subject-review -f -
+#+end_src

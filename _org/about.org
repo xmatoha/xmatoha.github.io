@@ -7,7 +7,7 @@ permalink: /about/
 #+end_export
 
 
-* Who am I
+* Who am I :test:tag1:tag2:
 My name is Martin Hablak. I'm software develpoer at IBM.
 ** Skils
 - Java :-)
