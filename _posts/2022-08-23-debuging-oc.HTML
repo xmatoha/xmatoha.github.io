@@ -1,0 +1,13 @@
+---
+layout: post
+title: Openshift tips and tricks
+---
+
+
+<p>
+To review which scc allowed pod to run
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">oc get pod podname -o yaml | oc adm policy scc-subject-review -f -
+</pre>
+</div>
